@@ -48,6 +48,7 @@ th, td {
   <select id="selectorMes" class="selector">
     <option value="4">Mayo</option>
     <option value="5">Junio</option>
+    <option value="6">Julio</option>
   </select>
   <select id="selectorGrupo" class="selector">
     <option value="2B">2B</option>
@@ -95,7 +96,10 @@ const CALENDARIO = {
     "29": "2", "30":"4", "31":"3"},
   "junio": {"1": "5", "2":"1",
     "5":"2", "6":"4", "7":"3", "8":"5", "9":"1",
-    "13":"2", "14":"3", "15":"4", "16":"5"}
+    "13":"2", "14":"3", "15":"4", "16":"5"},
+  "julio": {"10":"1", "11":"2", "12":"3", "13":"4", "14":"5", 
+        "17":"1", "18":"2", "19":"3", "20":"6", "21":"4", 
+        "24":"5", "25":"1", "26":"3", "27":"2", "28":"4", "31":"5"}
 }
 var selectorMes   = document.getElementById("selectorMes");
 var selectorGrupo = document.getElementById("selectorGrupo");
@@ -112,11 +116,12 @@ function getWeekOfMonth(date) {
 function mostrarHorario() {
   let year = 2023;
   let mesId = selectorMes.value;
+  if (!mesId) return;
   let grupo = selectorGrupo.value;
+  if (!grupo) return;
   let horario = HORARIOS[grupo];
   let mes  = MESES[mesId];
   let calendario = CALENDARIO[mes];
-
   var bodyTabla = tHorario.getElementsByTagName('tbody')[0];
   bodyTabla.innerHTML = "";
   var dias = Object.keys(calendario);
@@ -126,7 +131,7 @@ function mostrarHorario() {
   let date = new Date();
   let diaHoy = date.getDay() - 1;
   let semanaHoy = getWeekOfMonth(date) - 1;
-  let semanas = [["", "", "", "", ""]];
+  let semanas = [null, null, null, null, null];
   for (let i = 0; i < dias.length; i++) {
     let dia = dias[i];
     let valor = calendario[dia];
@@ -144,13 +149,19 @@ function mostrarHorario() {
     lineas.push("<span class='diaHorario'>Día "+valor+"</span>");
     lineas = lineas.concat(horarioDia);
     let html = lineas.join('<br>');
-    if (semanas[semanaId] == undefined) {
-      semanas.push(["", "", "", "", ""])
+    if (semanas[semanaId] == null) {
+      semanas[semanaId] = ["", "", "", "", ""];
     }
     semanas[semanaId][diaId] = html;
   }
+  let semanasMostrar = [];
   for (let i = 0; i < semanas.length; i++) {
     let semana = semanas[i];
+    if(!semana) continue;
+    semanasMostrar.push(semana);
+  }
+  for (let i = 0; i < semanasMostrar.length; i++) {
+    let semana = semanasMostrar[i];
     var fila = bodyTabla.insertRow(i);
     for (let j = 0; j < semana.length; j++) {
       let dia = semana[j];

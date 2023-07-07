@@ -45,16 +45,8 @@ th, td {
 </head>
 <body>
   <h1>Horario de Clases</h1>
-  <select id="selectorMes" class="selector">
-    <option value="4">Mayo</option>
-    <option value="5">Junio</option>
-    <option value="6">Julio</option>
-    <option value="7">Agosto</option>
-  </select>
-  <select id="selectorGrupo" class="selector">
-    <option value="2B">2B</option>
-    <option value="jardin">Jardin</option>
-  </select>
+  <select id="selectorMes" class="selector"></select>
+  <select id="selectorGrupo" class="selector"></select>
   <table id="tHorario">
     <thead>
       <tr>
@@ -181,14 +173,35 @@ function mostrarHorario() {
   }
 }
 
+function titulo(texto) {
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
+let date = new Date();
+let mesActual = date.getMonth();
+let defaultMes = 99;
+for (let mes in CALENDARIO) {
+  const opt1 = document.createElement("option");
+  opt1.text  = titulo(mes);
+  opt1.value = MESES.indexOf(mes);
+  selectorMes.add(opt1);
+  if(opt1.value == mesActual) defaultMes = mesActual;
+}
+for (let grupo in HORARIOS) {
+  const opt1 = document.createElement("option");
+  opt1.text  = titulo(grupo);
+  opt1.value = grupo;
+  selectorGrupo.add(opt1);
+}
+if(defaultMes != 99) {
+  selectorMes.value = defaultMes;
+}
 selectorMes.addEventListener("change", function(event) {
   mostrarHorario();
 });
 selectorGrupo.addEventListener("change", function(event) {
   mostrarHorario();
 });
-let date = new Date();
-selectorMes.value = date.getMonth();
+
 mostrarHorario();
 </script>
 </body>

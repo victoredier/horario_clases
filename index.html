@@ -63,6 +63,8 @@ th, td {
 
   <script>
 const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const RECESO = ["","","","",""];
+const DIA6   = [];
 const HORARIOS = {
   "2B": {
     "1": ["Danza", "English", "Reading Plan", "Ética", "Español"],
@@ -70,7 +72,8 @@ const HORARIOS = {
     "3": ["Social Studies", "English", "Matemáticas", "Español", "Math"],
     "4": ["Science", "Arts", "Religión", "Educación Física"],
     "5": ["Matemáticas", "Technology", "Social Studies", "Religión", "Science"],
-    "6": []
+    "6": DIA6,
+    "Receso": RECESO
   },
   "jardin": {
     "1": ["Ética", "Español", "Informática", "Religión", "Educación Física"],
@@ -78,7 +81,8 @@ const HORARIOS = {
     "3": ["Música", "Español", "Matemáticas", "Inglés", "Motricidad Fina"],
     "4": ["Danza", "Biología", "Matemáticas", "Arts", "Inglés"],
     "5": ["Español", "Reading Plan", "Motricidad Fina", "Natación", "Natación"],
-    "6": []
+    "6": DIA6,
+    "Receso": RECESO
   }
 }
 const CALENDARIO = {
@@ -94,10 +98,23 @@ const CALENDARIO = {
     "17":"1", "18":"2", "19":"3", "20":"6", "21":"4", 
     "24":"5", "25":"1", "26":"3", "27":"2", "28":"4", "31":"5"},
   "agosto": {"1":"1", "2":"3", "3":"2", "4":"4",
-    "8":"5","9":"3","10":"1","11":"2",
+  "8":"5","9":"3","10":"1","11":"2",
     "14":"4","15":"5","16":"3","17":"1","18":"2",
     "22":"4","23":"3","24":"5","25":"1",
-    "28":"2","29":"6","30":"3","31":"4"
+    "28":"2","29":"6","30":"4","31":"3"
+  },
+  "septiembre": {"1":"5",
+    "4" :"1", "5" :"2", "6" :"3", "7" :"4", "8" :"5", 
+    "11":"1", "12":"2", "13":"3", "14":"4", "15":"5",
+    "18":"1", "19":"2", "20":"3", "21":"4", "22":"5",
+    "25":"4", "26":"5", "27":"3", "28":"6", "29":"1",
+  },
+  "octubre": {
+    "2" :"2", "3" :"4", "4" :"3", "5" :"5", "6" :"1", 
+    "9" :"Receso", "10":"Receso", "11":"Receso", "12":"Receso", "13":"Receso",
+             "17":"2", "18":"3", "19":"4", "20":"5",
+    "23":"1", "24":"2", "25":"3", "26":"4", "27":"6",
+    "30":"5", "31":"1",
   }
 }
 var selectorMes   = document.getElementById("selectorMes");

@@ -1,202 +1,323 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>Horario de Clases</title>
-  <style>
-body {
-  font-family: Arial;
-}
-@media print {
-body table{
-  font-size: 12px;
-}
-h1 { display: none;}
-th, td {padding: 1px;}
-}
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-th, td {
-  border: 1px solid black;
-  padding: 8px;
-  vertical-align: top;
-}
-.selector{
-  margin-bottom: 10px;
-}
-.uniformeEduFisica {
-  color: #0606da;
-}
-.uniformeRojo .diaMes
-{
-  color: red;
-}
-.diaMes {
-  font-weight: bold;
-  display: block;
-  border-bottom: 1px solid;
-}
-.diaHorario {
-  font-style: italic;
-  font-weight: bold;
-}
-  </style>
-</head>
-<body>
-  <h1>Horario de Clases</h1>
-  <select id="selectorMes" class="selector"></select>
-  <select id="selectorGrupo" class="selector"></select>
-  <table id="tHorario">
-    <thead>
-      <tr>
-        <th>Lunes</th>
-        <th>Martes</th>
-        <th>Miércoles</th>
-        <th>Jueves</th>
-        <th>Viernes</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
-
-  <script>
-const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
-const RECESO = ["","","","",""];
-const DIA6   = [];
-const HORARIOS = {
-  "3B": {
-    "1": ["Español", "Ethics", "Social Studies", "Danzas", "Math", "Science"],
-    "2": ["Reading Plan", "Religión", "Matemáticas", "Social Studies", "Technology", "Español"],
-    "3": ["Educación Física", "Social Studies", "Science", "Español", "English", "Religión"],
-    "4": ["Matemáticas", "Science", "Math", "Arts", "English", "Music"],
-    "5": ["Social Studies", "Español", "English", "Matemáticas", "Educación Física", "Science"],
-    "6": DIA6,
-    "Receso": RECESO
-  },
-  "transicion": {
-    "1": ["Español", "Swimming Class", "Swimming Class", "English", "Música", "Science"],
-    "2": ["Science", "Educación Física", "Motricidad Fina", "Technology", "Danzas", "Español"],
-    "3": ["Matemáticas", "Música", "Science", "Arts", "Motricidad Fina", "English"],
-    "4": ["Motricidad Fina", "Matemáticas", "Español", "English", "Sociales", "Reading Plan"],
-    "5": ["English", "Reading Plan", "Religión", "Ethics", "Matemáticas", "Arts"],
-    "6": DIA6,
-    "Receso": RECESO
-  }
-}
-const CALENDARIO = {
-  "febrero": {
-                                   "1":"2",  "2":"4",
-    "5":"5",   "6":"1",  "7":"3",  "8":"2",  "9":"4",
-    "12":"5", "13":"1", "14":"3", "15":"2", "16":"4",
-    "19":"5", "20":"1", "21":"3", "22":"2", "23":"4",
-    "26":"5", "27":"6", "28":"3", "29":"1"
-  }
-}
-var selectorMes   = document.getElementById("selectorMes");
-var selectorGrupo = document.getElementById("selectorGrupo");
-var tHorario      = document.getElementById("tHorario");
-
-function getWeekOfMonth(date) {
-  var firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-  var firstDayOfWeek = firstDayOfMonth.getDay(); // 0 (Sunday) to 6 (Saturday)
-  var dayOfMonth = date.getDate();
-  var offset = (firstDayOfWeek + dayOfMonth - 1) / 7;
-  return Math.ceil(offset);
-}
-
-function mostrarHorario() {
-  let year = 2024;
-  let mesId = selectorMes.value;
-  if (!mesId) return;
-  let grupo = selectorGrupo.value;
-  if (!grupo) return;
-  let horario = HORARIOS[grupo];
-  let mes  = MESES[mesId];
-  let calendario = CALENDARIO[mes];
-  var bodyTabla = tHorario.getElementsByTagName('tbody')[0];
-  bodyTabla.innerHTML = "";
-  var dias = Object.keys(calendario);
-  dias.sort(function(a, b) {
-    return parseInt(a) - parseInt(b);
-  });
-  let date = new Date();
-  let diaHoy = date.getDay() - 1;
-  let semanaHoy = getWeekOfMonth(date) - 1;
-  let semanas = [null, null, null, null, null];
-  for (let i = 0; i < dias.length; i++) {
-    let dia = dias[i];
-    let valor = calendario[dia];
-    let date = new Date(year, mesId, dia);
-    let diaId = date.getDay() - 1;
-    let semanaId = getWeekOfMonth(date) - 1;
-    let horarioDia = horario[valor];
-    for (let index = 0; index < horarioDia.length; index++) {
-      if (horarioDia[index] === 'Educación Física' || horarioDia[index] === 'Natación' || horarioDia[index] === 'Swimming Class') {
-        horarioDia[index] = '<span class="uniformeEduFisica">'+horarioDia[index]+'</span>';
+  <head>
+    <title>Horario de Clases</title>
+    <style>
+      body {
+        font-family: Arial;
       }
-    }
-    let lineas = []
-    lineas.push("<span class='diaMes'>"+dia+"</span>");
-    lineas.push("<span class='diaHorario'>Día "+valor+"</span>");
-    lineas = lineas.concat(horarioDia);
-    let html = lineas.join('<br>');
-    if (semanas[semanaId] == null) {
-      semanas[semanaId] = ["", "", "", "", ""];
-    }
-    semanas[semanaId][diaId] = html;
-  }
-  let semanasMostrar = [];
-  for (let i = 0; i < semanas.length; i++) {
-    let semana = semanas[i];
-    if(!semana) continue;
-    semanasMostrar.push(semana);
-  }
-  for (let i = 0; i < semanasMostrar.length; i++) {
-    let semana = semanasMostrar[i];
-    var fila = bodyTabla.insertRow(i);
-    for (let j = 0; j < semana.length; j++) {
-      let dia = semana[j];
-      var celda = fila.insertCell(j);
-      if (j == 1 || j == 3) {
-        celda.classList.add("uniformeRojo");
+      @media print {
+        body table {
+          font-size: 12px;
+        }
+        h1 {
+          display: none;
+        }
+        th,
+        td {
+          padding: 1px;
+        }
       }
-      celda.innerHTML = dia;
-    }
-  }
-}
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+        vertical-align: top;
+      }
+      .selector {
+        margin-bottom: 10px;
+      }
+      .uniformeEduFisica {
+        color: #0606da;
+      }
+      .uniformeRojo .diaMes {
+        color: red;
+      }
+      .diaMes {
+        font-weight: bold;
+        display: block;
+        border-bottom: 1px solid;
+      }
+      .diaHorario {
+        font-style: italic;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Horario de Clases</h1>
+    <select id="selectorMes" class="selector"></select>
+    <select id="selectorGrupo" class="selector"></select>
+    <table id="tHorario">
+      <thead>
+        <tr>
+          <th>Lunes</th>
+          <th>Martes</th>
+          <th>Miércoles</th>
+          <th>Jueves</th>
+          <th>Viernes</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-function titulo(texto) {
-  return texto.charAt(0).toUpperCase() + texto.slice(1);
-}
-let date = new Date();
-let mesActual = date.getMonth();
-let defaultMes = 99;
-for (let mes in CALENDARIO) {
-  const opt1 = document.createElement("option");
-  opt1.text  = titulo(mes);
-  opt1.value = MESES.indexOf(mes);
-  selectorMes.add(opt1);
-  if(opt1.value == mesActual) defaultMes = mesActual;
-}
-for (let grupo in HORARIOS) {
-  const opt1 = document.createElement("option");
-  opt1.text  = titulo(grupo);
-  opt1.value = grupo;
-  selectorGrupo.add(opt1);
-}
-if(defaultMes != 99) {
-  selectorMes.value = defaultMes;
-}
-selectorMes.addEventListener("change", function(event) {
-  mostrarHorario();
-});
-selectorGrupo.addEventListener("change", function(event) {
-  mostrarHorario();
-});
+    <script>
+      const MESES = [
+        "enero",
+        "febrero",
+        "marzo",
+        "abril",
+        "mayo",
+        "junio",
+        "julio",
+        "agosto",
+        "septiembre",
+        "octubre",
+        "noviembre",
+        "diciembre",
+      ];
+      const RECESO = ["", "", "", "", ""];
+      const DIA6 = [];
+      const HORARIOS = {
+        "3B": {
+          1: [
+            "Español",
+            "Ethics",
+            "Social Studies",
+            "Danzas",
+            "Math",
+            "Science",
+          ],
+          2: [
+            "Reading Plan",
+            "Religión",
+            "Matemáticas",
+            "Social Studies",
+            "Technology",
+            "Español",
+          ],
+          3: [
+            "Educación Física",
+            "Social Studies",
+            "Science",
+            "Español",
+            "English",
+            "Religión",
+          ],
+          4: ["Matemáticas", "Science", "Math", "Arts", "English", "Music"],
+          5: [
+            "Social Studies",
+            "Español",
+            "English",
+            "Matemáticas",
+            "Educación Física",
+            "Science",
+          ],
+          6: DIA6,
+          Receso: RECESO,
+        },
+        transicion: {
+          1: [
+            "Español",
+            "Swimming Class",
+            "Swimming Class",
+            "English",
+            "Música",
+            "Science",
+          ],
+          2: [
+            "Science",
+            "Educación Física",
+            "Motricidad Fina",
+            "Technology",
+            "Danzas",
+            "Español",
+          ],
+          3: [
+            "Matemáticas",
+            "Música",
+            "Science",
+            "Arts",
+            "Motricidad Fina",
+            "English",
+          ],
+          4: [
+            "Motricidad Fina",
+            "Matemáticas",
+            "Español",
+            "English",
+            "Sociales",
+            "Reading Plan",
+          ],
+          5: [
+            "English",
+            "Reading Plan",
+            "Religión",
+            "Ethics",
+            "Matemáticas",
+            "Arts",
+          ],
+          6: DIA6,
+          Receso: RECESO,
+        },
+      };
+      const CALENDARIO = {
+        febrero: {
+          1: "2",
+          2: "4",
+          5: "5",
+          6: "1",
+          7: "3",
+          8: "2",
+          9: "4",
+          12: "5",
+          13: "1",
+          14: "3",
+          15: "2",
+          16: "4",
+          19: "5",
+          20: "1",
+          21: "3",
+          22: "2",
+          23: "4",
+          26: "5",
+          27: "6",
+          28: "3",
+          29: "1",
+        },
+        marzo: {
+          1: "2",
+          4: "4",
+          5: "5",
+          6: "3",
+          7: "1",
+          8: "2",
+          11: "4",
+          12: "5",
+          13: "3",
+          14: "1",
+          15: "2",
+          18: "4",
+          19: "5",
+          20: "3",
+          21: "6",
+          22: "1",
+        },
+      };
+      var selectorMes = document.getElementById("selectorMes");
+      var selectorGrupo = document.getElementById("selectorGrupo");
+      var tHorario = document.getElementById("tHorario");
 
-mostrarHorario();
-</script>
-</body>
+      function getWeekOfMonth(date) {
+        var firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+        var firstDayOfWeek = firstDayOfMonth.getDay(); // 0 (Sunday) to 6 (Saturday)
+        var dayOfMonth = date.getDate();
+        var offset = (firstDayOfWeek + dayOfMonth - 1) / 7;
+        return Math.ceil(offset);
+      }
+
+      function mostrarHorario() {
+        let year = 2024;
+        let mesId = selectorMes.value;
+        if (!mesId) return;
+        let grupo = selectorGrupo.value;
+        if (!grupo) return;
+        let horario = HORARIOS[grupo];
+        let mes = MESES[mesId];
+        let calendario = CALENDARIO[mes];
+        var bodyTabla = tHorario.getElementsByTagName("tbody")[0];
+        bodyTabla.innerHTML = "";
+        var dias = Object.keys(calendario);
+        dias.sort(function (a, b) {
+          return parseInt(a) - parseInt(b);
+        });
+        let date = new Date();
+        let diaHoy = date.getDay() - 1;
+        let semanaHoy = getWeekOfMonth(date) - 1;
+        let semanas = [null, null, null, null, null];
+        for (let i = 0; i < dias.length; i++) {
+          let dia = dias[i];
+          let valor = calendario[dia];
+          let date = new Date(year, mesId, dia);
+          let diaId = date.getDay() - 1;
+          let semanaId = getWeekOfMonth(date) - 1;
+          let horarioDia = horario[valor];
+          for (let index = 0; index < horarioDia.length; index++) {
+            if (
+              horarioDia[index] === "Educación Física" ||
+              horarioDia[index] === "Natación" ||
+              horarioDia[index] === "Swimming Class"
+            ) {
+              horarioDia[index] =
+                '<span class="uniformeEduFisica">' +
+                horarioDia[index] +
+                "</span>";
+            }
+          }
+          let lineas = [];
+          lineas.push("<span class='diaMes'>" + dia + "</span>");
+          lineas.push("<span class='diaHorario'>Día " + valor + "</span>");
+          lineas = lineas.concat(horarioDia);
+          let html = lineas.join("<br>");
+          if (semanas[semanaId] == null) {
+            semanas[semanaId] = ["", "", "", "", ""];
+          }
+          semanas[semanaId][diaId] = html;
+        }
+        let semanasMostrar = [];
+        for (let i = 0; i < semanas.length; i++) {
+          let semana = semanas[i];
+          if (!semana) continue;
+          semanasMostrar.push(semana);
+        }
+        for (let i = 0; i < semanasMostrar.length; i++) {
+          let semana = semanasMostrar[i];
+          var fila = bodyTabla.insertRow(i);
+          for (let j = 0; j < semana.length; j++) {
+            let dia = semana[j];
+            var celda = fila.insertCell(j);
+            if (j == 1 || j == 3) {
+              celda.classList.add("uniformeRojo");
+            }
+            celda.innerHTML = dia;
+          }
+        }
+      }
+
+      function titulo(texto) {
+        return texto.charAt(0).toUpperCase() + texto.slice(1);
+      }
+      let date = new Date();
+      let mesActual = date.getMonth();
+      let defaultMes = 99;
+      for (let mes in CALENDARIO) {
+        const opt1 = document.createElement("option");
+        opt1.text = titulo(mes);
+        opt1.value = MESES.indexOf(mes);
+        selectorMes.add(opt1);
+        if (opt1.value == mesActual) defaultMes = mesActual;
+      }
+      for (let grupo in HORARIOS) {
+        const opt1 = document.createElement("option");
+        opt1.text = titulo(grupo);
+        opt1.value = grupo;
+        selectorGrupo.add(opt1);
+      }
+      if (defaultMes != 99) {
+        selectorMes.value = defaultMes;
+      }
+      selectorMes.addEventListener("change", function (event) {
+        mostrarHorario();
+      });
+      selectorGrupo.addEventListener("change", function (event) {
+        mostrarHorario();
+      });
+
+      mostrarHorario();
+    </script>
+  </body>
 </html>

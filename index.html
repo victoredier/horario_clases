@@ -19,6 +19,11 @@
         border: 1px solid #0a3f88;
         padding: 8px;
         vertical-align: top;
+        width: 20%;
+      }
+      div {
+        max-width: 1600px;
+        margin: 0 auto;
       }
       th:nth-child(odd) {
         color: white;
@@ -74,22 +79,23 @@
     </style>
   </head>
   <body>
-    <h1>Horario de Clases</h1>
-    <select id="selectorMes" class="selector"></select>
-    <select id="selectorGrupo" class="selector"></select>
-    <table id="tHorario">
-      <thead>
-        <tr>
-          <th>Lunes</th>
-          <th>Martes</th>
-          <th>Miércoles</th>
-          <th>Jueves</th>
-          <th>Viernes</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
+    <div>
+      <h1>Horario de Clases</h1>
+      <select id="selectorMes" class="selector"></select>
+      <select id="selectorGrupo" class="selector"></select>
+      <table id="tHorario">
+        <thead>
+          <tr>
+            <th>Lunes</th>
+            <th>Martes</th>
+            <th>Miércoles</th>
+            <th>Jueves</th>
+            <th>Viernes</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
     <script>
       const MESES = [
         "enero",

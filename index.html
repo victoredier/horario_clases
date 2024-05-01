@@ -10,18 +10,6 @@
         font-family: "Montserrat", sans-serif, Arial;
         color: #0a3f88;
       }
-      @media print {
-        body table {
-          font-size: 10px;
-        }
-        h1, select {
-          display: none;
-        }
-        th,
-        td {
-          padding: 1px;
-        }
-      }
       table {
         border-collapse: collapse;
         width: 100%;
@@ -60,6 +48,28 @@
       .diaHorario {
         font-style: italic;
         font-weight: bold;
+      }
+      @media print {
+        body table {
+          font-size: 10px;
+          color: black;
+        }
+        h1, select {
+          display: none;
+        }
+        th,
+        td {
+          padding: 1px;
+        }
+        th:nth-child(odd) {
+          color: #0a3f88;
+        }
+        th:nth-child(even) {
+          color: #f54a4a;
+        }
+        .uniformeEduFisica {
+          color: #0a3f88;
+        }
       }
     </style>
   </head>

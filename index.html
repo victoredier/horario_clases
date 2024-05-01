@@ -6,14 +6,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
     <title>Horario de Clases</title>
     <style>
-      body {
+      body, select {
         font-family: "Montserrat", sans-serif, Arial;
+        color: #0a3f88;
       }
       @media print {
         body table {
-          font-size: 12px;
+          font-size: 10px;
         }
-        h1 {
+        h1, select {
           display: none;
         }
         th,
@@ -27,18 +28,29 @@
       }
       th,
       td {
-        border: 1px solid black;
+        border: 1px solid #0a3f88;
         padding: 8px;
         vertical-align: top;
+      }
+      th:nth-child(odd) {
+        color: white;
+        background: #0a3f88;
+      }
+      th:nth-child(even) {
+        color: white;
+        background: #f54a4a;
       }
       .selector {
         margin-bottom: 10px;
       }
       .uniformeEduFisica {
-        color: #0606da;
+        color: white;
+        background: #0a3f88;
+        padding: 1px 2px;
+        border-radius: 6px;
       }
       .uniformeRojo .diaMes {
-        color: red;
+        color: #f54a4a;
       }
       .diaMes {
         font-weight: bold;
@@ -133,7 +145,6 @@
         transicion: {
           1: [
             "Español",
-            "Swimming Class",
             "Swimming Class",
             "English",
             "Música",
@@ -286,11 +297,24 @@
           for (let j = 0; j < semana.length; j++) {
             let dia = semana[j];
             var celda = fila.insertCell(j);
-            if (j == 1 || j == 3) {
-              celda.classList.add("uniformeRojo");
-            }
+            uniformesCelda(celda, dia, j);
             celda.innerHTML = dia;
           }
+        }
+      }
+
+      function uniformesCelda(celda, diaHtml, diaPos) {
+        const MARTES = 1;
+        const JUEVES = 3;
+        if (diaPos == MARTES || diaPos == JUEVES) {
+          celda.classList.add("uniformeRojo");
+        } else {
+          celda.classList.add("uniformeBlanco");
+        }
+        if (diaHtml.includes("uniformeEduFisica")) {
+          celda.classList.add("uniEduFisica");
+        } else {
+          celda.classList.add("uniDiario");
         }
       }
 

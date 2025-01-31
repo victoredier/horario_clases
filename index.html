@@ -114,90 +114,91 @@
       const RECESO = ["", "", "", "", ""];
       const DIA6 = ["", "", "", "", ""];
       const HORARIOS = {
-        "3B": {
+        "4B": {
           1: [
-            "Technology",
-            "Ethics",
             "Español",
+            "Science",
             "Matemáticas",
-            "Social Studies",
-            "Science"
+            "Technology",
+            "English",
+            "Social Studies"
           ],
           2: [
-            "Educación Física",
-            "Religión",
             "English",
+            "Social Studies",
+            "Español",
             "Math",
             "Music",
-            "Español"
+            "Ethics"
           ],
           3: [
-            "Arts",
-            "Social Studies",
+            "English",
+            "Español",
             "Science",
-            "Religión",
-            "Reading Plan",
-            "English"
+            "Educación Física",
+            "Technology",
+            "Arts"
           ],
           4: [
-            "Science",
-            "Español",
-            "Educación Física",
             "Social Studies",
+            "English",
             "Matemáticas",
-            "English"
+            "Español",
+            "Religión",
+            "Science"
           ],
           5: [
-            "Danzas",
+            "Matemáticas",
             "Math",
             "Science",
-            "Matemáticas",
             "Social Studies",
-            "Español"
+            "Educación Física",
+            "Religión"
           ],
           6: DIA6,
           Receso: RECESO,
           R: RECESO,
         },
-        transicion: {
+        "1A": {
           1: [
-            "Reading Plan",
-            "English",
-            "Música",
             "Español",
-            "Danzas",
-            "Science"
-          ],
-          2: [
-            "Arts",
-            "Reading Plan",
             "Educación Física",
-            "Motricidad Fina",
-            "Español",
-            "Matemáticas"
-          ],
-          3: [
-            "Technology",
             "Ethics",
-            "Motricidad Fina",
             "Science",
             "English",
             "Matemáticas"
           ],
-          4: [
-            "Matemáticas",
-            "Sociales",
-            "Música",
-            "Motricidad Fina",
-            "English",
-            "Español"
+          2: [
+            "Music",
+            "Technology",
+            "Math",
+            "Social Studies",
+            "Science",
+            "English"
           ],
-          5: [
+          3: [
+            "Social Studies",
+            "Español",
+            "Science",
+            "Matemáticas",
             "English",
-            "Swimming Class",
+            "Educación Física"
+          ],
+          4: [
+            "Technology",
             "Religión",
             "Arts",
-            "Science"
+            "Science",
+            "Español",
+            "Social Studies"
+          ],
+          5: [
+            "Math",
+            "Social Studies",
+            "Religión",
+            "Matemáticas",
+            "Español",
+            "English"
           ],
           6: DIA6,
           Receso: RECESO,
@@ -205,19 +206,11 @@
         },
       };
       const CALENDARIO = {
-        octubre: {
-                     1: "4",  2: "3",  3: "5",  4: "1", 
-            7: "R",  8: "R",  9: "R", 10: "R", 11: "R", 
-                    15: "2", 16: "3", 17: "4", 18: "5", 
-           21: "1", 22: "2", 23: "3", 24: "6", 25: "4",
-           28: "5", 29: "1", 30: "3", 31: "2"
-        },
-        noviembre: {
-                                               1: "6",
-                    5: "4",  6: "3",  7: "5",  8: "1", 
-                   12: "2", 13: "3", 14: "4", 15: "5",
-          18: "1", 19: "2", 20: "3", 21: "4", 22: "5",
-          25: "1", 26: "2", 27: "3", 28: "4", 29: "5", 
+        febrero: {
+            3:  "5",  4: "1",  5: "3",  6: "2",  7: "4",
+            10: "5", 11: "1", 12: "3", 13: "2", 14: "4",
+            17: "5", 18: "1", 19: "3", 20: "2", 21: "4",
+            24: "5", 25: "1", 26: "3", 27: "2", 28: "6",
         }
       };
       var selectorMes = document.getElementById("selectorMes");

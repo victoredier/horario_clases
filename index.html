@@ -54,6 +54,11 @@
         font-style: italic;
         font-weight: bold;
       }
+      .coro, .catequesis {
+        border: 1px solid;
+        padding: 1px 3px;
+        border-radius: 3px;
+      }
       @media print {
         body table {
           font-size: 10px;
@@ -207,13 +212,13 @@
       };
       const CALENDARIO = {
         
-        agosto: {
-                                               1: "5",
-           4: "1",  5: "2",  6: "3",  7: "R",  8: "4",
-          11: "5", 12: "1", 13: "3", 14: "2", 15: "4",
-          18: "R", 19: "5", 20: "3", 21: "1", 22: "2",
-          25: "4", 26: "5", 27: "3", 28: "1", 29: "2",
-        },
+        septiembre:{
+           1: "R",  2: "5",  3: "3",  4: "1",  5: "2",
+           8: "4",  9: "5", 10: "3", 11: "1", 12: "2",
+          15: "4", 16: "5", 17: "3", 18: "1", 19: "2",
+          22: "4", 23: "5", 24: "3", 25: "1", 26: "2",
+          29: "4", 30: "6",
+        }
       };
       var selectorMes = document.getElementById("selectorMes");
       var selectorGrupo = document.getElementById("selectorGrupo");
@@ -225,6 +230,11 @@
         var dayOfMonth = date.getDate();
         var offset = (firstDayOfWeek + dayOfMonth - 1) / 7;
         return Math.ceil(offset);
+      }
+
+      function getDayOfWeek(date) {
+        var dayOfWeek = date.getDay(); // 0 (Sunday) to 6 (Saturday)
+        return dayOfWeek;
       }
 
       function mostrarHorario() {
@@ -270,6 +280,16 @@
           if (valor == "R") valor = "Receso";
           lineas.push("<span class='diaHorario'>Día " + valor + "</span>");
           lineas = lineas.concat(horarioDia);
+          if (diaId == diaHoy && semanaId == semanaHoy) {
+            lineas.unshift("<strong>HOY</strong>");
+          }
+          let dayOfWeek = getDayOfWeek(date);
+          if (dayOfWeek == 4 && grupo == "4B") {
+            lineas.push("<span class='catequesis'>Catequesis</span>");
+          }
+          if (dayOfWeek == 4 && grupo == "1A") {
+            lineas.push("<span class='coro'>Coro Infantil</span>");
+          }
           let html = lineas.join("<br>");
           if (semanas[semanaId] == null) {
             semanas[semanaId] = ["", "", "", "", ""];

@@ -276,13 +276,14 @@
             }
           }
           let lineas = [];
-          lineas.push("<span class='diaMes'>" + dia + "</span>");
+          let diaTitulo = dia;
+          if (diaId == diaHoy && semanaId == semanaHoy) {
+            diaTitulo = dia + " <strong>HOY</strong>";
+          }
+          lineas.push("<span class='diaMes'>" + diaTitulo + "</span>");
           if (valor == "R") valor = "Receso";
           lineas.push("<span class='diaHorario'>Día " + valor + "</span>");
           lineas = lineas.concat(horarioDia);
-          if (diaId == diaHoy && semanaId == semanaHoy) {
-            lineas.unshift("<strong>HOY</strong>");
-          }
           let dayOfWeek = getDayOfWeek(date);
           if (dayOfWeek == 4 && grupo == "4B") {
             lineas.push("<span class='catequesis'>Catequesis</span>");

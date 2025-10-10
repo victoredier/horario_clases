@@ -121,108 +121,111 @@
       const HORARIOS = {
         "4B": {
           1: [
-            "Educación Física",
-            "Science",
-            "Math",
+            "Español",
             "Matemáticas",
             "Social Studies",
-            "Music"
+            "Science",
+            "English",
+            "Physical Education"
           ],
           2: [
             "Español",
-            "Ethics",
-            "Science",
+            "Religión",
             "Social Studies",
-            "English",
-            "Matemáticas"
+            "Matemáticas",
+            "Science",
+            "Math"
           ],
           3: [
             "English",
-            "Science",
-            "Español",
-            "Social Studies",
-            "Religión",
-            "Arts"
-          ],
-          4: [
+            "Ethics",
+            "Physical Education",
+            "Music",
             "Math",
-            "Technology",
-            "Matemáticas",
-            "Español",
-            "Religión",
-            "English"
-          ],
-          5: [
-            "Science",
-            "Technology",
-            "English",
-            "Educación Física",
-            "Social Studies",
             "Español"
           ],
-          6: DIA6,
-          Receso: RECESO,
-          R: RECESO,
+          4: [
+            "Social Studies",
+            "Religión",
+            "English",
+            "Español",
+            "Technology",
+            "Science"
+          ],
+          5: [
+            "Arts",
+            "Social Studies",
+            "English",
+            "Science",
+            "Technology",
+            "Matemáticas"
+          ]
         },
         "1A": {
           1: [
-            "Technology",
-            "Math",
-            "Español",
-            "Social Studies",
+            "Arts",
+            "Ethics",
             "English",
-            "Religión"
+            "Matemáticas",
+            "Physical Education",
+            "Science"
           ],
           2: [
+            "Math",
+            "Religion",
             "Social Studies",
-            "Science",
-            "Religión",
-            "Technology",
             "English",
-            "Matemáticas"
+            "Español",
+            "Science"
           ],
           3: [
+            "Español",
             "English",
-            "Music",
+            "Technology",
             "Social Studies",
-            "Matemáticas",
             "Science",
-            "Español"
+            "Physical Education"
           ],
           4: [
-            "Math",
-            "Matemáticas",
             "Science",
             "Español",
-            "Ethics",
-            "Educación Física"
+            "Social Studies",
+            "Math",
+            "Religión",
+            "Matemáticas"
           ],
           5: [
-            "Educación Física",
-            "Social Studies",
             "English",
-            "Science",
-            "Español",
-            "Arts"
-          ],
-          6: DIA6,
-          Receso: RECESO,
-          R: RECESO,
+            "Matemáticas",
+            "Technology",
+            "Music",
+            "Social Studies",
+            "Español"
+          ]
         },
       };
       const CALENDARIO = {
         
-        septiembre:{
-           1: "R",  2: "5",  3: "3",  4: "1",  5: "2",
-           8: "4",  9: "5", 10: "3", 11: "1", 12: "2",
-          15: "4", 16: "5", 17: "3", 18: "1", 19: "2",
-          22: "4", 23: "5", 24: "3", 25: "1", 26: "2",
-          29: "4", 30: "6",
+        octubre:{
+                             1: '3',  2: '5',  3: '1',
+           6: 'R',  7: 'R',  8: 'R',  9: 'R', 10: 'R',
+          13: 'R', 14: '2', 15: '3', 16: '4', 17: '5',
+          20: '1', 21: '2', 22: '3', 23: '4', 24: '5',
+          27: '1', 28: '2', 29: '3', 30: '4', 31: '6'
         }
       };
       var selectorMes = document.getElementById("selectorMes");
       var selectorGrupo = document.getElementById("selectorGrupo");
       var tHorario = document.getElementById("tHorario");
+
+      function esUniformeEduFisica(materia) {
+        return (
+          materia === "Educación Física" ||
+          materia === "Physical Education" ||
+          materia === "Natación" ||
+          materia === "Swimming Class"
+        );
+      }
 
       function getWeekOfMonth(date) {
         var firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -244,6 +247,9 @@
         let grupo = selectorGrupo.value;
         if (!grupo) return;
         let horario = HORARIOS[grupo];
+        horario["6"] = DIA6;
+        horario["Receso"] = RECESO;
+        horario["R"] = RECESO;
         let mes = MESES[mesId];
         let calendario = CALENDARIO[mes];
         var bodyTabla = tHorario.getElementsByTagName("tbody")[0];
@@ -264,11 +270,7 @@
           let semanaId = getWeekOfMonth(date) - 1;
           let horarioDia = horario[valor];
           for (let index = 0; index < horarioDia.length; index++) {
-            if (
-              horarioDia[index] === "Educación Física" ||
-              horarioDia[index] === "Natación" ||
-              horarioDia[index] === "Swimming Class"
-            ) {
+            if ( esUniformeEduFisica(horarioDia[index]) ) {
               horarioDia[index] =
                 '<span class="uniformeEduFisica">' +
                 horarioDia[index] +
@@ -285,12 +287,14 @@
           lineas.push("<span class='diaHorario'>Día " + valor + "</span>");
           lineas = lineas.concat(horarioDia);
           let dayOfWeek = getDayOfWeek(date);
+          /* Agregar actividades extracurriculares
           if (dayOfWeek == 4 && grupo == "4B") {
             lineas.push("<span class='catequesis'>Catequesis</span>");
           }
           if (dayOfWeek == 4 && grupo == "1A") {
             lineas.push("<span class='coro'>Coro Infantil</span>");
           }
+          */
           let html = lineas.join("<br>");
           if (semanas[semanaId] == null) {
             semanas[semanaId] = ["", "", "", "", ""];
